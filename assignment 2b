@@ -1,0 +1,42 @@
+#include <stdio.h>
+
+int main() {
+    int n;
+
+    // Input the size of the array
+    printf("Enter the size of the array: ");
+    scanf("%d", &n);
+
+    float arr[n];
+
+    // Input the elements of the array
+    printf("Enter the elements of the array:\n");
+    for (int i = 0; i < n; i++) {
+        scanf("%f", &arr[i]);
+    }
+
+    float window_size;
+
+    // Input the window size
+    printf("Enter the window size: ");
+    scanf("%f", &window_size);
+
+    float smoothed_array[n];
+
+    // Initialize the first element of the smoothed array
+    smoothed_array[0] = arr[0];
+
+    // Calculate the smoothed values using exponential moving average
+    for (int i = 1; i < n; i++) {
+        float alpha = 2 / (1 + window_size);
+        smoothed_array[i] = (arr[i] * alpha) + (smoothed_array[i - 1] * (1 - alpha));
+    }
+
+    // Print the smoothed array
+    printf("Smoothed array:\n");
+    for (int i = 0; i < n; i++) {
+        printf("%.2f\t", smoothed_array[i]);
+    }
+
+    return 0;
+}
