@@ -1,0 +1,70 @@
+#include <stdio.h>
+
+int main() {
+    int size;
+
+    // Input the size of the matrix
+    printf("Enter the size of the matrix: ");
+    scanf("%d", &size);
+
+    int array[size][size];
+
+    // Input the matrix elements
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            printf("Enter array[%d][%d]: ", i, j);
+            scanf("%d", &array[i][j]);
+        }
+    }
+
+    int filter_size = 3;  // Size of the filter
+    int newArray[size][size];
+
+    // Initialize the new array with 0
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            newArray[i][j] = 0;
+        }
+    }
+
+    // Apply the 3x3 filter to calculate the median
+    for (int row = 0; row < (size - filter_size + 1); row++) {
+        for (int col = 0; col < (size - filter_size + 1); col++) {
+            int tempArray[filter_size * filter_size];
+            int index = 0;
+
+            // Extract the 3x3 sub-matrix
+            for (int i = row; i < row + filter_size; i++) {
+                for (int j = col; j < col + filter_size; j++) {
+                    tempArray[index++] = array[i][j];
+                }
+            }
+
+            // Sort the extracted elements to find the median
+            for (int i = 0; i < (filter_size * filter_size) - 1; i++) {
+                for (int j = i + 1; j < (filter_size * filter_size); j++) {
+                    if (tempArray[j] < tempArray[i]) {
+                        // Swap the elements
+                        int temp = tempArray[i];
+                        tempArray[i] = tempArray[j];
+                        tempArray[j] = temp;
+                    }
+                }
+            }
+
+            // Place the median in the new array
+            newArray[row + 1][col + 1] = tempArray[(filter_size * filter_size) / 2];
+        }
+    }
+
+    // Print the resulting matrix
+    printf("Resulting matrix after applying the median filter:\n");
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            printf("%d\t", newArray[i][j]);
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
